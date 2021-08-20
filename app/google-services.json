@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "975846236604",
+    "firebase_url": "https://stadion-hack-default-rtdb.firebaseio.com",
+    "project_id": "stadion-hack",
+    "storage_bucket": "stadion-hack.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:975846236604:android:e5ddff15db599b8b19cbb9",
+        "android_client_info": {
+          "package_name": "pyotr.popov443.stadion_kaliningrad"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "975846236604-5mvlj1som1bhgfva2sjjpb82sra7i050.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGZi6hliWiQDpLqBR8IZzo5sjg1GIkReE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "975846236604-5mvlj1som1bhgfva2sjjpb82sra7i050.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
