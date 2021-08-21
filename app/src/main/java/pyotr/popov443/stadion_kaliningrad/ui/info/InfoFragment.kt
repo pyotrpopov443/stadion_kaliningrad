@@ -17,7 +17,6 @@ import pyotr.popov443.stadion_kaliningrad.ui.home.HomeViewModel
 
 class InfoFragment : Fragment(R.layout.fragment_info) {
 
-
     private val menuViewModel: InfoViewModel by activityViewModels()
 
     private val binding by viewBinding(FragmentInfoBinding::bind)

@@ -1,14 +1,16 @@
 package pyotr.popov443.stadion_kaliningrad
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import by.kirich1409.viewbindingdelegate.viewBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import pyotr.popov443.stadion_kaliningrad.databinding.ActivityUserBinding
 
 class UserActivity : AppCompatActivity() {
+
+    private val binding by viewBinding(ActivityUserBinding::bind)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -20,26 +20,6 @@ object Repository {
         database.getReference("users/${uid}").setValue(user)
     }
 
-     suspend fun getRequests() : List<Request> {
-         val list = mutableListOf<Request>()
-         withContext(Dispatchers.IO) {
-             kotlin.runCatching {
-                 await(database.getReference("request_person").get().addOnSuccessListener {
-                     for (child in it.children) {
-                         val request = child.getValue<RequestBody>()!!
-                         if (request.uid == uid)
-                             list.add(
-                                 Request(request.forwho,
-                                     request.organisation,
-                                     request.date,
-                                     request.time, "не проверено"))
-                     }
-                 })
-             }
-         }
-         return list
-    }
-
     suspend fun getUser() : User {
         var user = User()
         withContext(Dispatchers.IO) {
@@ -52,16 +32,15 @@ object Repository {
         return user
     }
 
-    fun sendRequest(forwho: String, date: String, time: String,
-                    organisation: String, purpose: String, who: String, passport: String) {
+    fun sendRequest(list: List<String>, date: String, time: String,
+                    organisation: String, purpose: String, who: String) {
         val requests = database.getReference("request_person")
         val id = requests.push().key.toString()
         requests.child(id).setValue(RequestBody(
-            uid,  forwho, organisation, date, time, purpose, false,
+            uid,  list, organisation, date, time, purpose, false,
             confirmed_director = false,
             dangerous = false,
-            who = who,
-            passport = passport
+            who = who
         ))
     }
 

@@ -5,5 +5,5 @@
 
     <string name="title_info">Информация</string>
     <string name="title_home">Заявки</string>
-    <string name="title_profile">Профиль</string>
+    <string name="title_add_request">Добавить заявку</string>
 </resources>

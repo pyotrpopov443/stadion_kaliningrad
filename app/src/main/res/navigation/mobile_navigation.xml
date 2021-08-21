@@ -18,8 +18,9 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_profile"
-        android:name="pyotr.popov443.stadion_kaliningrad.ui.profile.ProfileFragment"
-        android:label="@string/title_profile"
-        tools:layout="@layout/fragment_profile" />
+        android:id="@+id/navigation_add_request"
+        android:name="pyotr.popov443.stadion_kaliningrad.ui.addrequest.AddRequestFragment"
+        android:label="@string/title_add_request"
+        tools:layout="@layout/fragment_add_request" />
+
 </navigation>
