@@ -3,7 +3,6 @@ package pyotr.popov443.stadion_kaliningrad
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
@@ -20,33 +19,24 @@ class SignInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
 
-        /*binding.signIn.setOnClickListener {
-            val email = binding.inputEmail.text.toString()
-            val password = binding.inputPassword.text.toString()
-            signIn(email, password)
+        binding.btnNoAccount.setOnClickListener {
+            val signUpIntent = Intent(this, SignUpActivity::class.java)
+            startActivity(signUpIntent)
         }
 
-        binding.signUp.setOnClickListener {
+        binding.btnSignIn.setOnClickListener {
             val email = binding.inputEmail.text.toString()
             val password = binding.inputPassword.text.toString()
-            signUp(email, password)
-        }*/
-    }
-
-    private fun signUp(email: String, password: String) {
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    Repository.addUser(auth.currentUser!!.uid)
-                    start()
-                } else {
-                    Snackbar
-                        .make(binding.root,
-                        "Вы ввели некорректные данные или такой пользователь уже зарегистрирован",
-                        Snackbar.LENGTH_SHORT)
-                        .show()
-                }
+            when {
+                email.isEmpty() -> Snackbar
+                    .make(binding.root, "Введите почту", Snackbar.LENGTH_SHORT)
+                    .show()
+                password.isEmpty() -> Snackbar
+                    .make(binding.root, "Введите пароль", Snackbar.LENGTH_SHORT)
+                    .show()
+                else -> signIn(email, password)
             }
+        }
     }
 
     private fun signIn(email: String, password: String) {
@@ -56,19 +46,15 @@ class SignInActivity : AppCompatActivity() {
                     start()
                 } else {
                     Snackbar
-                        .make(binding.root, "Неверные данные", Snackbar.LENGTH_SHORT)
+                        .make(binding.root, "Неверно введены данные или пользователя не существует", Snackbar.LENGTH_SHORT)
                         .show()
                 }
             }
     }
 
     private fun start() {
-        val intent = Intent(this, MainActivity::class.java)
-        val user = auth.currentUser!!
-        val bundle = bundleOf(
-            Pair("name", user.displayName),
-            Pair("email", user.email))
-        intent.putExtras(bundle)
+        val intent = Intent(this, UserActivity::class.java)
+        Repository.uid = auth.currentUser!!.uid
         startActivity(intent)
     }
 

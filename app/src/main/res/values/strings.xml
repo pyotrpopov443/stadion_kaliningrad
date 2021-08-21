@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Стадион Калининград</string>
+    <string name="no_account">Нет аккаунта? <b><u>Зарегистрируйтесь</u></b></string>
+    <string name="title_activity_user">MainActivity</string>
+
+    <string name="title_info">Информация</string>
+    <string name="title_home">Заявки</string>
+    <string name="title_profile">Профиль</string>
 </resources>
