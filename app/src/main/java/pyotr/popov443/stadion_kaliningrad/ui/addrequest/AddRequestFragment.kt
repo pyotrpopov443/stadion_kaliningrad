@@ -12,6 +12,7 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.google.android.material.snackbar.Snackbar
 import pyotr.popov443.stadion_kaliningrad.R
 import pyotr.popov443.stadion_kaliningrad.data.Repository
+import pyotr.popov443.stadion_kaliningrad.data.models.RequestBody
 import pyotr.popov443.stadion_kaliningrad.databinding.FragmentAddRequestBinding
 
 
@@ -22,6 +23,7 @@ class AddRequestFragment : Fragment(R.layout.fragment_add_request) {
     private val binding by viewBinding(FragmentAddRequestBinding::bind)
 
     private val list = mutableListOf<String>()
+    private val requestList = mutableListOf<RequestBody>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -34,13 +36,12 @@ class AddRequestFragment : Fragment(R.layout.fragment_add_request) {
         binding.btnAddForwho.setOnClickListener {
             val forwho = binding.inputForwho.text.toString()
             val passport = binding.inputPassport.text.toString()
+            val date = binding.inputDate.text.toString()
+            val time = binding.inputTime.text.toString()
+            val organisation = binding.inputOrganisation.text.toString()
+            val purpose = binding.inputPurpose.text.toString()
+            val who = binding.inputWho.text.toString()
             if (forwho.isEmpty() || passport.isEmpty()) return@setOnClickListener
-            list.add("$forwho $passport")
-            binding.listForwho.adapter = ArrayAdapter(
-                requireContext(),
-                android.R.layout.simple_list_item_1, list
-            )
-            setListViewHeightBasedOnChildren(binding.listForwho)
             binding.inputForwho.setText("")
             binding.inputPassport.setText("")
 
@@ -49,28 +50,35 @@ class AddRequestFragment : Fragment(R.layout.fragment_add_request) {
             binding.inputOrganisation.isEnabled = false
             binding.inputPurpose.isEnabled = false
             binding.inputWho.isEnabled = false
+
+            requestList.add(RequestBody(
+                Repository.uid, forwho, passport, organisation, date, time, purpose,
+                confirmed_head = false, confirmed_director = false, dangerous = false, who
+            ))
+            list.add("Заявка на: $forwho\nПаспорт: $passport\nДата: $date\nВремя: $time\n" +
+                    "Организация: $organisation\nЦель: $purpose\nФИО: $who")
+            binding.listForwho.adapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_list_item_1, list
+            )
+            setListViewHeightBasedOnChildren(binding.listForwho)
+
+            binding.btnSendRequest.visibility = View.VISIBLE
         }
 
         binding.btnSendRequest.setOnClickListener {
-            val date = binding.inputDate.text.toString()
-            val time = binding.inputTime.text.toString()
-            val organisation = binding.inputOrganisation.text.toString()
-            val purpose = binding.inputPurpose.text.toString()
-            val who = binding.inputWho.text.toString()
-
-            when {
-                list.isEmpty() || date.isEmpty() || time.isEmpty() || organisation.isEmpty()
-                        || purpose.isEmpty() || who.isEmpty()  -> Snackbar
-                    .make(binding.root, "Заполните все поля", Snackbar.LENGTH_SHORT)
-                    .show()
-                else -> {
-                    Snackbar
-                        .make(binding.root, "Заявка отправлена", Snackbar.LENGTH_SHORT)
-                        .show()
-                    Repository.sendRequest(list, date, time, organisation, purpose, who)
-                }
-            }
+            Snackbar
+                .make(binding.root, "Заявка отправлена", Snackbar.LENGTH_SHORT)
+                .show()
+            Repository.sendRequest(requestList)
+            requireActivity().supportFragmentManager.popBackStack();
         }
+
+        addRequestViewModel.username.observe(viewLifecycleOwner, {
+            binding.inputForwho.setText(it)
+            binding.inputWho.setText(it)
+        })
+
     }
 
     private fun setListViewHeightBasedOnChildren(myListView: ListView) {

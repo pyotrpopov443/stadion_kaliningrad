@@ -17,10 +17,7 @@ class RecyclerRequestsAdapter(private var list: List<Request>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        var forwho = ""
-        for (user in list[position].list!!)
-            forwho += user
-        holder.binding.forwho.text = forwho
+        holder.binding.forwho.text = list[position].forWho
         holder.binding.organisation.text = list[position].organisation
         holder.binding.date.text = list[position].date
         holder.binding.time.text = list[position].time

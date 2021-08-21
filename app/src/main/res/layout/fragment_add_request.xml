@@ -108,7 +108,7 @@
                     android:id="@+id/input_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
+                    android:inputType="date"
                     android:typeface="monospace"
                     app:allowed_chars="0123456789"
                     app:mask="##.##.####"
@@ -147,7 +147,7 @@
                     android:id="@+id/input_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
+                    android:inputType="time"
                     android:typeface="monospace"
                     app:allowed_chars="0123456789"
                     app:mask="##:##"
@@ -295,7 +295,8 @@
             android:layout_margin="20dp"
             android:textAllCaps="false"
             app:cornerRadius="10dp"
-            android:text="Отправить"/>
+            android:text="Отправить"
+            android:visibility="gone"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

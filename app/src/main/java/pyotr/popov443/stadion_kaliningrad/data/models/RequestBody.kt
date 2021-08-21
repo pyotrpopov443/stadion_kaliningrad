@@ -2,7 +2,8 @@ package pyotr.popov443.stadion_kaliningrad.data.models
 
 data class RequestBody(
     val uid: String? = "",
-    val list: List<String>? = listOf(),
+    val forwho: String? = "",
+    val passport: String? = "",
     val organisation: String? = "",
     val date: String? = "",
     val time: String? = "",

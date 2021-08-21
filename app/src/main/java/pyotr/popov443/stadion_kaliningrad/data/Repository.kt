@@ -32,16 +32,10 @@ object Repository {
         return user
     }
 
-    fun sendRequest(list: List<String>, date: String, time: String,
-                    organisation: String, purpose: String, who: String) {
+    fun sendRequest(requestList: List<RequestBody>) {
         val requests = database.getReference("request_person")
         val id = requests.push().key.toString()
-        requests.child(id).setValue(RequestBody(
-            uid,  list, organisation, date, time, purpose, false,
-            confirmed_director = false,
-            dangerous = false,
-            who = who
-        ))
+        requests.child(id).setValue(requestList)
     }
 
 }

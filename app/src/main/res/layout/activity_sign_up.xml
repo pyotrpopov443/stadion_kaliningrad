@@ -127,7 +127,8 @@
                 android:background="@null"
                 android:textSize="13sp"
                 android:hint="Ваш пароль"
-                android:layout_margin="10dp"/>
+                android:layout_margin="10dp"
+                android:inputType="textPassword"/>
 
         </LinearLayout>
 
@@ -161,7 +162,8 @@
                 android:background="@null"
                 android:textSize="13sp"
                 android:hint="Подтвердите пароль"
-                android:layout_margin="10dp"/>
+                android:layout_margin="10dp"
+                android:inputType="textPassword"/>
 
         </LinearLayout>
 

@@ -21,6 +21,7 @@ import pyotr.popov443.stadion_kaliningrad.data.models.Request
 import pyotr.popov443.stadion_kaliningrad.data.models.RequestBody
 import pyotr.popov443.stadion_kaliningrad.databinding.FragmentHomeBinding
 import java.lang.Exception
+import java.util.*
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
 
@@ -64,14 +65,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 requestList.clear()
                 for (child in dataSnapshot.children) {
-                    val request = child.getValue<RequestBody>()!!
-                    if (request.uid == Repository.uid)
+                    val request = child.getValue<List<RequestBody>>()!!
+                    if (request[0].uid == Repository.uid && upToDate(request[0].date)) {
+                        var forWho = request[0].forwho
+                        request.forEachIndexed { i, it ->
+                            if (i > 0) forWho += ", " + it.forwho
+                        }
                         requestList.add(
-                            Request(request.list,
-                                request.organisation,
-                                request.date,
-                                request.time, "не проверено")
+                            Request(forWho, request[0].organisation,
+                                request[0].date, request[0].time, status(request[0]) )
                         )
+                    }
                 }
                 try {
                     if (requestList.isNotEmpty())
@@ -91,6 +95,30 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             binding.textName.text = homeViewModel.username.value!! + "!"
         })
 
+    }
+
+    private fun status(request: RequestBody) : String {
+        if (request.dangerous == true) return "отклонена"
+        if (request.confirmed_director == true) return "одобрена"
+        return "в ожидании"
+    }
+
+    private fun upToDate(date: String?) : Boolean {
+        if (date == null) return false
+        val data = date.split(".")
+        val day = data[0].toInt()
+        val month = data[1].toInt()
+        val year = data[2].toInt()
+
+        val today = java.util.Calendar.getInstance()
+        val currentDay = today.get(Calendar.DAY_OF_MONTH)
+        val currentMonth = today.get(Calendar.MONTH)
+        val currentYear = today.get(Calendar.YEAR)
+
+        if (year > currentYear) return true
+        else if (year == currentYear && month > currentMonth) return true
+        else if (year == currentYear && month == currentMonth && day > currentDay) return true
+        return false
     }
 
 }
