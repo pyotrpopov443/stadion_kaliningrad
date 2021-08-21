@@ -275,6 +275,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:textAllCaps="false"
             app:cornerRadius="10dp"
+            android:layout_margin="16dp"
             android:text="Добавить человека"/>
 
         <ListView

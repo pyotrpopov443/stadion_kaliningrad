@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.СтадионКалининград">
-        <activity android:name=".CreateRequestActivity"></activity>
+        <activity android:name=".AdminActivity"></activity>
         <activity android:name=".SignUpActivity" />
         <activity android:name=".SignInActivity" />
         <activity

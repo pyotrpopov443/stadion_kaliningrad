@@ -2,6 +2,7 @@ package pyotr.popov443.stadion_kaliningrad.ui.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.View
 import androidx.core.view.isNotEmpty
@@ -21,6 +22,7 @@ import pyotr.popov443.stadion_kaliningrad.data.models.Request
 import pyotr.popov443.stadion_kaliningrad.data.models.RequestBody
 import pyotr.popov443.stadion_kaliningrad.databinding.FragmentHomeBinding
 import java.lang.Exception
+import java.time.LocalDate
 import java.util.*
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -29,6 +31,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private val binding by viewBinding(FragmentHomeBinding::bind)
 
+    var listener: ValueEventListener? = null
+    private val adapter = RecyclerRequestsAdapter(listOf())
     val requestList = mutableListOf<Request>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -42,6 +46,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     TypedValue.COMPLEX_UNIT_DIP, 5f, resources.displayMetrics)
                 binding.typeHistory.elevation = TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP, 0f, resources.displayMetrics)
+                filterRequests()
             }
         }
         binding.typeHistory.setOnClickListener {
@@ -54,19 +59,19 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 binding.typeHistory.elevation = TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP, 5f, resources.displayMetrics
                 )
+                filterRequests()
             }
         }
 
-        val adapter = RecyclerRequestsAdapter(listOf())
         binding.recyclerRequests.layoutManager = GridLayoutManager(context, 1)
         binding.recyclerRequests.adapter = adapter
 
-        val postListener = object : ValueEventListener {
+        listener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 requestList.clear()
                 for (child in dataSnapshot.children) {
                     val request = child.getValue<List<RequestBody>>()!!
-                    if (request[0].uid == Repository.uid && upToDate(request[0].date)) {
+                    if (request[0].uid == Repository.uid) {
                         var forWho = request[0].forwho
                         request.forEachIndexed { i, it ->
                             if (i > 0) forWho += ", " + it.forwho
@@ -77,24 +82,26 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         )
                     }
                 }
-                try {
-                    if (requestList.isNotEmpty())
-                        binding.noRequests.visibility = View.GONE
-                    else
-                        binding.noRequests.visibility = View.VISIBLE
-                } catch (e: Exception) {
-
-                }
-                adapter.setRequestsList(requestList)
+                if (requestList.isNotEmpty())
+                    binding.noRequests.visibility = View.GONE
+                else
+                    binding.noRequests.visibility = View.VISIBLE
+                filterRequests()
             }
             override fun onCancelled(databaseError: DatabaseError) {}
         }
-        FirebaseDatabase.getInstance().getReference("request_person").addValueEventListener(postListener)
+        FirebaseDatabase.getInstance().getReference("request_person").addValueEventListener(listener!!)
 
         homeViewModel.username.observe(viewLifecycleOwner, {
             binding.textName.text = homeViewModel.username.value!! + "!"
         })
 
+    }
+
+    override fun onDestroyView() {
+        if (listener != null)
+            FirebaseDatabase.getInstance().getReference("request_person").removeEventListener(listener!!)
+        super.onDestroyView()
     }
 
     private fun status(request: RequestBody) : String {
@@ -103,22 +110,35 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         return "в ожидании"
     }
 
-    private fun upToDate(date: String?) : Boolean {
+    private fun filterRequests() {
+        val list = mutableListOf<Request>()
+        requestList.forEach {
+            if (toShow(it.date)) list.add(it)
+        }
+        adapter.setRequestsList(list)
+    }
+
+    private fun toShow(date: String?) : Boolean {
         if (date == null) return false
+        return if (binding.typeActive.isChecked)
+            upToDate(date)
+        else !upToDate(date)
+    }
+
+    private fun upToDate(date: String) : Boolean {
         val data = date.split(".")
         val day = data[0].toInt()
-        val month = data[1].toInt()
+        val month = data[1].toInt()-1
         val year = data[2].toInt()
+        val time = Date(year, month, day).time
 
-        val today = java.util.Calendar.getInstance()
+        val today = Calendar.getInstance()
         val currentDay = today.get(Calendar.DAY_OF_MONTH)
         val currentMonth = today.get(Calendar.MONTH)
         val currentYear = today.get(Calendar.YEAR)
+        val currentTime = Date(currentYear, currentMonth, currentDay).time
 
-        if (year > currentYear) return true
-        else if (year == currentYear && month > currentMonth) return true
-        else if (year == currentYear && month == currentMonth && day > currentDay) return true
-        return false
+        return time > currentTime
     }
 
 }

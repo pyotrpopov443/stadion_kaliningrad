@@ -40,7 +40,7 @@
         android:layout_margin="10dp"
         android:paddingHorizontal="50dp"
         android:textAlignment="center"
-        android:text="Зарегистрируйтесь для получения пропуска на стадион Калининград"/>
+        android:text="Стадион Калининград"/>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/card_email"

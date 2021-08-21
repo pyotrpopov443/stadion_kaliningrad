@@ -19,8 +19,7 @@ class RecyclerRequestsAdapter(private var list: List<Request>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.binding.forwho.text = list[position].forWho
         holder.binding.organisation.text = list[position].organisation
-        holder.binding.date.text = list[position].date
-        holder.binding.time.text = list[position].time
+        holder.binding.datetime.text = list[position].date + " " + list[position].time
         holder.binding.state.text = list[position].state
     }
 

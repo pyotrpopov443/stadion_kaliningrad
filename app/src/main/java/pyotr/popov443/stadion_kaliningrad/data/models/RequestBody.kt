@@ -9,6 +9,7 @@ data class RequestBody(
     val time: String? = "",
     val purpose: String? = "",
     val confirmed_head: Boolean? = false,
-    val confirmed_director: Boolean? = false,
-    val dangerous: Boolean? = false,
-    val who: String? = "")
+    var confirmed_director: Boolean? = false,
+    var dangerous: Boolean? = false,
+    val who: String? = "",
+    var id: String? = "")

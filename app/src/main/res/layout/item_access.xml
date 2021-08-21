@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:elevation="5dp"
+    android:background="@drawable/request_item_background"
+    android:layout_margin="5dp"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/text_full_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:maxWidth="100dp"
+        android:paddingTop="4dp"
+        android:textColor="#000000"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/solution_head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toEndOf="@id/text_full_name"
+        android:text="Решение НO"
+        android:textColor="#000000"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/image_head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_wait"
+        app:layout_constraintTop_toBottomOf="@id/solution_head"
+        app:layout_constraintStart_toStartOf="@id/solution_head" />
+
+    <TextView
+        android:id="@+id/solution_security"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/solution_head"
+        android:text="Решение СБ"
+        android:textColor="#000000"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/image_security"
+        android:src="@drawable/ic_wait"
+        app:layout_constraintTop_toBottomOf="@id/solution_security"
+        app:layout_constraintStart_toStartOf="@id/solution_security"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/your_solution"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/image_head"
+        app:layout_constraintStart_toStartOf="@id/image_head"
+        android:layout_marginTop="10dp"
+        android:text="Ваше решение"
+        android:textColor="#000000"
+        android:textSize="12sp" />
+
+    <ImageView
+        android:id="@+id/image_accept"
+        android:src="@drawable/ic_accept_gray"
+        app:layout_constraintTop_toTopOf="@id/your_solution"
+        app:layout_constraintBottom_toBottomOf="@id/your_solution"
+        app:layout_constraintStart_toEndOf="@+id/your_solution"
+        android:layout_marginStart="10dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"/>
+
+    <ImageView
+        android:id="@+id/image_decline"
+        android:src="@drawable/ic_decline_gray"
+        android:layout_marginStart="10dp"
+        app:layout_constraintTop_toTopOf="@id/your_solution"
+        app:layout_constraintBottom_toBottomOf="@id/your_solution"
+        app:layout_constraintStart_toEndOf="@+id/image_accept"
+        android:layout_width="30dp"
+        android:layout_height="30dp" />
+
+    <TextView
+        android:id="@+id/textInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/image_accept"
+        android:visibility="gone"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

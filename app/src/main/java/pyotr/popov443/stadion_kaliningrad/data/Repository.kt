@@ -16,7 +16,7 @@ object Repository {
     private val database = FirebaseDatabase.getInstance()
 
     fun addUser(uid: String, full_name: String, email: String) {
-        val user = User(email, full_name)
+        val user = User(email, full_name, "user")
         database.getReference("users/${uid}").setValue(user)
     }
 
@@ -32,9 +32,12 @@ object Repository {
         return user
     }
 
-    fun sendRequest(requestList: List<RequestBody>) {
+    fun sendRequest(requestList: List<RequestBody>, key: String? = null) {
         val requests = database.getReference("request_person")
-        val id = requests.push().key.toString()
+        val id = key ?: requests.push().key.toString()
+        requestList.forEach {
+            it.id = id
+        }
         requests.child(id).setValue(requestList)
     }
 
